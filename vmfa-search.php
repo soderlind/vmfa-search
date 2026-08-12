@@ -3,7 +3,7 @@
  * Plugin Name:       Virtual Media Folders - Search
  * Plugin URI:        https://github.com/soderlind/vmfa-search
  * Description:       Fast, typo-tolerant search for the Media Library, powered by the Loupe Search engine. Add-on for Virtual Media Folders.
- * Version:           0.1.0
+ * Version:           1.0.0
  * Requires at least: 6.8
  * Requires PHP:      8.3
  * Requires Plugins:  virtual-media-folders, loupe-search
@@ -24,7 +24,7 @@ namespace VmfaSearch;
 defined( 'ABSPATH' ) || exit;
 
 // Plugin constants.
-define( 'VMFA_SEARCH_VERSION', '0.1.0' );
+define( 'VMFA_SEARCH_VERSION', '1.0.0' );
 define( 'VMFA_SEARCH_FILE', __FILE__ );
 define( 'VMFA_SEARCH_PATH', plugin_dir_path( __FILE__ ) );
 define( 'VMFA_SEARCH_URL', plugin_dir_url( __FILE__ ) );

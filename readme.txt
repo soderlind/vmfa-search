@@ -3,7 +3,7 @@ Contributors: PerS
 Tags: media, search, media library, folders, loupe
 Requires at least: 6.8
 Tested up to: 7.1
-Stable tag: 0.1.0
+Stable tag: 1.0.0
 Requires PHP: 8.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -77,5 +77,12 @@ Media search falls back to WordPress' default search and a notice is shown. Your
 
 == Changelog ==
 
-= 0.1.0 =
+= 1.0.0 =
 * Initial release.
+* Upgrades the native Media Library search field with typo-tolerant, content-aware search (title, filename, alt text, caption, description).
+* Dedicated Loupe-backed media index, separate from Loupe Search's post indexes and hidden from front-end site search.
+* Library-wide search: entering a term searches the whole library, even while a folder is selected.
+* Search begins at the 2nd character (filterable via `vmfa_search_min_prefix_length`).
+* Automatic incremental indexing on upload, edit, delete, and folder change; background rebuild via Action Scheduler.
+* REST API: `index-status`, `rebuild`, and `search` under `vmfa-search/v1`.
+* Graceful fallback to native WordPress search until the index is built, or when the Loupe Search plugin is inactive.

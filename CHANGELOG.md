@@ -2,7 +2,7 @@
 
 All notable changes to this project are documented here.
 
-## 0.1.0
+## 1.0.0
 
 - Initial release.
 - Upgrades the native Media Library search field with typo-tolerant, content-aware search (intercepts `s` in grid and list views).
