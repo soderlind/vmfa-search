@@ -40,6 +40,7 @@ Namespace `vmfa-search/v1`:
 
 - `vmfa_search_document` — filter the indexed document per media item.
 - `vmfa_search_searchable_attributes` / `vmfa_search_filterable_attributes` — adjust the index schema.
+- `vmfa_search_min_prefix_length` — minimum characters before search runs, also Loupe's prefix length (default 2; requires an index rebuild).
 - `vmfa_search_db_path` — change the index directory.
 
 ### Example: index EXIF / IPTC

@@ -14,6 +14,7 @@ defined( 'ABSPATH' ) || exit;
 use Loupe\Loupe\Configuration;
 use Loupe\Loupe\Loupe;
 use Loupe\Loupe\LoupeFactory;
+use VmfaSearch\Search\SearchService;
 
 /**
  * Owns the media-item search index.
@@ -74,7 +75,8 @@ final class MediaIndex {
 			->withPrimaryKey( 'id' )
 			->withSearchableAttributes( $this->get_searchable_attributes() )
 			->withFilterableAttributes( $this->get_filterable_attributes() )
-			->withSortableAttributes( [] );
+			->withSortableAttributes( [] )
+			->withMinTokenLengthForPrefixSearch( SearchService::min_query_length() );
 
 		$this->loupe = ( new LoupeFactory() )->create( $path, $configuration );
 

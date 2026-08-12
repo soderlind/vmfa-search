@@ -21,12 +21,9 @@ use VmfaSearch\Index\MediaIndex;
 final class SearchService {
 
 	/**
-	 * Minimum query length before Loupe search runs.
-	 *
-	 * Below this, the native WordPress search is left in place; Loupe's prefix
-	 * rules make very short queries unreliable.
+	 * Default minimum query / prefix length.
 	 */
-	public const MIN_QUERY_LENGTH = 3;
+	public const DEFAULT_MIN_QUERY_LENGTH = 2;
 
 	/**
 	 * Maximum number of hits returned.
@@ -45,6 +42,26 @@ final class SearchService {
 	}
 
 	/**
+	 * Minimum query length before Loupe search runs.
+	 *
+	 * This value is also used as Loupe's minimum token length for prefix search,
+	 * so the index and the query guard stay in sync. Changing it requires a full
+	 * index rebuild.
+	 *
+	 * @return int
+	 */
+	public static function min_query_length(): int {
+		/**
+		 * Filters the minimum query / prefix length for media search.
+		 *
+		 * @param int $length Minimum number of characters. Default 2.
+		 */
+		$length = (int) apply_filters( 'vmfa_search_min_prefix_length', self::DEFAULT_MIN_QUERY_LENGTH );
+
+		return max( 1, $length );
+	}
+
+	/**
 	 * Search the media index.
 	 *
 	 * @param string $query Raw user query.
@@ -54,7 +71,7 @@ final class SearchService {
 	public function search( string $query, int $limit = self::MAX_HITS ): array {
 		$query = trim( $query );
 
-		if ( ! $this->index->is_available() || mb_strlen( $query ) < self::MIN_QUERY_LENGTH ) {
+		if ( ! $this->index->is_available() || mb_strlen( $query ) < self::min_query_length() ) {
 			return [];
 		}
 

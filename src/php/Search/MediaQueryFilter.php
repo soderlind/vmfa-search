@@ -26,7 +26,7 @@ use VmfaSearch\Index\MediaIndex;
  * constraint (VMF's `vmfo_folder` tax query), so results span the whole library
  * regardless of the selected folder.
  *
- * Search begins at the 3rd character. Shorter terms are ignored while the index
+ * Search begins at the 2nd character. Shorter terms are ignored while the index
  * is active (the current view is shown unfiltered), and interception only
  * happens once the index is built; before then the native WordPress search is
  * left untouched as a fallback.
@@ -155,7 +155,7 @@ final class MediaQueryFilter {
 	 * @return bool
 	 */
 	private function is_searchable_term( string $term ): bool {
-		return mb_strlen( trim( $term ) ) >= SearchService::MIN_QUERY_LENGTH;
+		return mb_strlen( trim( $term ) ) >= SearchService::min_query_length();
 	}
 
 	/**

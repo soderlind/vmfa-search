@@ -66,7 +66,7 @@ final class GridSearchGate {
 		wp_localize_script(
 			'vmfa-search-gate',
 			'vmfaSearchGate',
-			[ 'minChars' => SearchService::MIN_QUERY_LENGTH ]
+			[ 'minChars' => SearchService::min_query_length() ]
 		);
 	}
 }
