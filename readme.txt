@@ -49,9 +49,31 @@ Search runs against a dedicated index of your media items. Build it once from th
 
 No. The media index is admin-only and never leaks into public search results.
 
+= What fields are searched? =
+
+Title, filename, alt text, caption, and description. EXIF/IPTC (keywords, camera, etc.) is not indexed by default — see "Can I search by EXIF or IPTC?" below.
+
+= Can I search by EXIF or IPTC (keywords, camera)? =
+
+Not out of the box, but you can add it with the `vmfa_search_document` and `vmfa_search_searchable_attributes` filters, then rebuild the index. Example:
+
+`add_filter( 'vmfa_search_document', function ( $doc, $post ) {`
+`    $meta = wp_get_attachment_metadata( $post->ID );`
+`    $exif = is_array( $meta ) ? ( $meta['image_meta'] ?? array() ) : array();`
+`    $kw   = $exif['keywords'] ?? array();`
+`    $doc['keywords'] = is_array( $kw ) ? implode( ' ', $kw ) : (string) $kw;`
+`    $doc['camera']   = (string) ( $exif['camera'] ?? '' );`
+`    return $doc;`
+`}, 10, 2 );`
+`add_filter( 'vmfa_search_searchable_attributes', function ( $f ) {`
+`    return array_merge( $f, array( 'keywords', 'camera' ) );`
+`} );`
+
+Then go to **Media > VMF Settings > Search** and click **Rebuild media index**.
+
 = What happens if I deactivate Loupe Search? =
 
-The search box is disabled and a notice is shown. Your index is kept, so reactivating Loupe Search restores search without a rebuild.
+Media search falls back to WordPress' default search and a notice is shown. Your index is kept, so reactivating Loupe Search restores typo-tolerant search without a rebuild.
 
 == Changelog ==
 

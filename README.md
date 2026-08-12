@@ -42,6 +42,34 @@ Namespace `vmfa-search/v1`:
 - `vmfa_search_searchable_attributes` / `vmfa_search_filterable_attributes` — adjust the index schema.
 - `vmfa_search_db_path` — change the index directory.
 
+### Example: index EXIF / IPTC
+
+EXIF/IPTC is not indexed by default. To make descriptive metadata (e.g. IPTC
+keywords, camera, credit) searchable, add the fields to the document and register
+them as searchable, then rebuild the index from **Media → VMF Settings → Search**.
+
+```php
+// Add EXIF/IPTC fields to each media document.
+add_filter( 'vmfa_search_document', function ( array $doc, WP_Post $post ): array {
+    $meta = wp_get_attachment_metadata( $post->ID );
+    $exif = is_array( $meta ) ? ( $meta['image_meta'] ?? array() ) : array();
+
+    $keywords        = $exif['keywords'] ?? array();
+    $doc['keywords'] = is_array( $keywords ) ? implode( ' ', $keywords ) : (string) $keywords;
+    $doc['camera']   = (string) ( $exif['camera'] ?? '' );
+    $doc['credit']   = (string) ( $exif['credit'] ?? '' );
+
+    return $doc;
+}, 10, 2 );
+
+// Register the new fields as searchable (values must be strings/numbers).
+add_filter( 'vmfa_search_searchable_attributes', function ( array $fields ): array {
+    return array_merge( $fields, array( 'keywords', 'camera', 'credit' ) );
+} );
+```
+
+Schema changes take effect on the next full rebuild.
+
 ## Development
 
 ```bash
