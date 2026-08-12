@@ -12,6 +12,7 @@ namespace VmfaSearch;
 defined( 'ABSPATH' ) || exit;
 
 use VirtualMediaFolders\Addon\AbstractPlugin;
+use VmfaSearch\Admin\GridSearchGate;
 use VmfaSearch\Admin\MediaLibraryNotices;
 use VmfaSearch\Admin\SettingsTab;
 use VmfaSearch\Index\IndexStatus;
@@ -34,7 +35,7 @@ final class Plugin extends AbstractPlugin {
 	private ?MediaQueryFilter $query_filter = null;
 	private ?SettingsTab $settings_tab      = null;
 	private ?MediaLibraryNotices $notices   = null;
-
+	private ?GridSearchGate $search_gate    = null;
 	/**
 	 * Plugin text domain.
 	 */
@@ -60,6 +61,7 @@ final class Plugin extends AbstractPlugin {
 		$this->query_filter = new MediaQueryFilter( $this->search, $this->index, $this->status );
 		$this->settings_tab = new SettingsTab( $this->index, $this->status );
 		$this->notices      = new MediaLibraryNotices( $this->index, $this->status );
+		$this->search_gate  = new GridSearchGate( $this->index );
 	}
 
 	/**
@@ -77,6 +79,7 @@ final class Plugin extends AbstractPlugin {
 
 		if ( is_admin() ) {
 			$this->notices->register_hooks();
+			$this->search_gate->register_hooks();
 
 			if ( $this->supports_parent_tabs() ) {
 				add_filter( 'vmfo_settings_tabs', [ $this->settings_tab, 'register_tab' ] );
