@@ -26,8 +26,10 @@ use VmfaSearch\Index\MediaIndex;
  * constraint (VMF's `vmfo_folder` tax query), so results span the whole library
  * regardless of the selected folder.
  *
- * Interception only happens once the index is built; before then the native
- * WordPress search is left untouched as a fallback.
+ * Search begins at the 3rd character. Shorter terms are ignored while the index
+ * is active (the current view is shown unfiltered), and interception only
+ * happens once the index is built; before then the native WordPress search is
+ * left untouched as a fallback.
  */
 final class MediaQueryFilter {
 
@@ -76,7 +78,13 @@ final class MediaQueryFilter {
 
 		$term = isset( $query_args['s'] ) ? sanitize_text_field( (string) $query_args['s'] ) : '';
 
+		if ( '' === trim( $term ) ) {
+			return $query_args;
+		}
+
 		if ( ! $this->is_searchable_term( $term ) ) {
+			// Below the threshold: hold off searching and show the current view.
+			unset( $query_args['s'] );
 			return $query_args;
 		}
 
@@ -107,7 +115,13 @@ final class MediaQueryFilter {
 
 		$term = sanitize_text_field( (string) $query->get( 's' ) );
 
+		if ( '' === trim( $term ) ) {
+			return;
+		}
+
 		if ( ! $this->is_searchable_term( $term ) ) {
+			// Below the threshold: hold off searching and show the current view.
+			$query->set( 's', '' );
 			return;
 		}
 
