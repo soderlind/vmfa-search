@@ -18,6 +18,19 @@ while a folder is selected. Clear the search to return to the folder view.
 - [Virtual Media Folders](https://github.com/soderlind/virtual-media-folders) (active)
 - [Loupe Search](https://github.com/soderlind/loupe-search) (active — provides the search engine)
 
+## Installation
+
+Recommended: Use the [Add-On Manager](https://github.com/soderlind/vmfa) to install the add-on.
+
+Manual installation:
+
+1. Download [`vmfa-search.zip`](https://github.com/soderlind/vmfa-search/releases/latest/download/vmfa-search.zip)
+2. Upload via `Plugins → Add New → Upload Plugin`
+3. Activate via `WordPress Admin → Plugins`
+4. Go to **Media → VMF Settings → Search** and click **Rebuild media index**
+
+Plugin [updates are handled automatically](https://github.com/soderlind/wordpress-plugin-github-updater#readme) via GitHub. No need to manually download and install updates.
+
 ## How it works
 
 The add-on owns a dedicated Loupe/SQLite index of media items (`wp-content/vmfa-search-db/`), kept separate from Loupe Search's own post-type indexes. See [docs/adr/0001](docs/adr/0001-vmfa-search-owns-a-dedicated-media-index.md) for why.
