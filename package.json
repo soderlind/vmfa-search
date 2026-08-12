@@ -1,6 +1,6 @@
 {
 	"name": "vmfa-search",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Fast, typo-tolerant search for the Media Library, powered by Loupe Search. Add-on for Virtual Media Folders.",
 	"author": "Per Soderlind",
 	"license": "GPL-2.0-or-later",

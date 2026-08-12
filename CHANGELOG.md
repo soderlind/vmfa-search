@@ -2,6 +2,10 @@
 
 All notable changes to this project are documented here.
 
+## 1.0.1
+
+- Fixed: Prevent a fatal error when the "Virtual Media Folders" parent plugin is missing or older than 2.0.0; show an admin notice instead.
+
 ## 1.0.0
 
 - Initial release.

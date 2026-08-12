@@ -3,7 +3,7 @@ Contributors: PerS
 Tags: media, search, media library, folders, loupe
 Requires at least: 6.8
 Tested up to: 7.1
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 Requires PHP: 8.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -76,6 +76,9 @@ Then go to **Media > VMF Settings > Search** and click **Rebuild media index**.
 Media search falls back to WordPress' default search and a notice is shown. Your index is kept, so reactivating Loupe Search restores typo-tolerant search without a rebuild.
 
 == Changelog ==
+
+= 1.0.1 =
+* Fixed: Prevent a fatal error when the "Virtual Media Folders" parent plugin is missing or older than 2.0.0; show an admin notice instead.
 
 = 1.0.0 =
 * Initial release.
