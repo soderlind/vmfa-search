@@ -3,7 +3,7 @@
  * Plugin Name:       Virtual Media Folders - Search
  * Plugin URI:        https://github.com/soderlind/vmfa-search
  * Description:       Fast, typo-tolerant search for the Media Library, powered by the Loupe Search engine. Add-on for Virtual Media Folders.
- * Version:           1.0.0
+ * Version:           1.0.1
  * Requires at least: 6.8
  * Requires PHP:      8.3
  * Requires Plugins:  virtual-media-folders, loupe-search
@@ -24,7 +24,7 @@ namespace VmfaSearch;
 defined( 'ABSPATH' ) || exit;
 
 // Plugin constants.
-define( 'VMFA_SEARCH_VERSION', '1.0.0' );
+define( 'VMFA_SEARCH_VERSION', '1.0.1' );
 define( 'VMFA_SEARCH_FILE', __FILE__ );
 define( 'VMFA_SEARCH_PATH', plugin_dir_path( __FILE__ ) );
 define( 'VMFA_SEARCH_URL', plugin_dir_url( __FILE__ ) );
@@ -46,6 +46,12 @@ if ( class_exists( \VirtualMediaFolders\Addon\ActionSchedulerLoader::class ) ) {
  * @return void
  */
 function init(): void {
+	// The parent plugin (Virtual Media Folders 2.0.0+) provides the add-on base class.
+	if ( ! class_exists( \VirtualMediaFolders\Addon\AbstractPlugin::class ) ) {
+		add_action( 'admin_notices', __NAMESPACE__ . '\\missing_parent_notice' );
+		return;
+	}
+
 	// Update checker via GitHub releases.
 	if ( ! class_exists( \Soderlind\WordPress\GitHubUpdater::class ) ) {
 		require_once __DIR__ . '/class-github-updater.php';
@@ -62,3 +68,21 @@ function init(): void {
 }
 
 add_action( 'plugins_loaded', __NAMESPACE__ . '\\init', 15 );
+
+/**
+ * Admin notice shown when the required parent plugin is missing or outdated.
+ *
+ * @return void
+ */
+function missing_parent_notice(): void {
+	if ( ! current_user_can( 'activate_plugins' ) ) {
+		return;
+	}
+	printf(
+		'<div class="notice notice-error"><p>%s</p></div>',
+		esc_html__(
+			'Virtual Media Folders - Search requires the "Virtual Media Folders" plugin (version 2.0.0 or later) to be installed and active.',
+			'vmfa-search'
+		)
+	);
+}
