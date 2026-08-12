@@ -21,9 +21,12 @@ use VmfaSearch\Index\MediaIndex;
 final class SearchService {
 
 	/**
-	 * Minimum query length before a search runs.
+	 * Minimum query length before Loupe search runs.
+	 *
+	 * Below this, the native WordPress search is left in place; Loupe's prefix
+	 * rules make very short queries unreliable.
 	 */
-	public const MIN_QUERY_LENGTH = 2;
+	public const MIN_QUERY_LENGTH = 3;
 
 	/**
 	 * Maximum number of hits returned.
