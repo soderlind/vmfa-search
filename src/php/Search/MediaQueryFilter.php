@@ -20,13 +20,21 @@ use VmfaSearch\Index\MediaIndex;
  * WordPress already exposes the Media Library search term as `s` — in the grid
  * via `ajax_query_attachments_args`, and in the list view via the main query.
  * We resolve that term to a set of attachment IDs and inject `post__in`,
- * preserving Loupe's relevance order. The native folder filter still applies,
- * so search is naturally scoped to the current folder view.
+ * preserving Loupe's relevance order.
+ *
+ * Search is library-wide: when a term is present we drop the active folder
+ * constraint (VMF's `vmfo_folder` tax query), so results span the whole library
+ * regardless of the selected folder.
  *
  * Interception only happens once the index is built; before then the native
  * WordPress search is left untouched as a fallback.
  */
 final class MediaQueryFilter {
+
+	/**
+	 * The folder taxonomy owned by Virtual Media Folders.
+	 */
+	private const FOLDER_TAXONOMY = 'vmfo_folder';
 
 	private SearchService $search;
 	private MediaIndex $index;
@@ -75,6 +83,9 @@ final class MediaQueryFilter {
 		// Hand the term to Loupe instead of WordPress' default LIKE search.
 		unset( $query_args['s'] );
 
+		// Search is library-wide: drop the active folder constraint.
+		$query_args = $this->remove_folder_scope( $query_args );
+
 		return $this->constrain( $query_args, $term );
 	}
 
@@ -103,7 +114,12 @@ final class MediaQueryFilter {
 		$ids = $this->search->search( $term );
 		$ids = empty( $ids ) ? [ 0 ] : $ids;
 
-		// Replace the default search with our result set.
+		// Replace the default search with our result set (library-wide).
+		$tax_query = $query->get( 'tax_query' );
+		if ( is_array( $tax_query ) && ! empty( $tax_query ) ) {
+			$query->set( 'tax_query', $this->strip_folder_tax_query( $tax_query ) );
+		}
+
 		$query->set( 's', '' );
 		$query->set( 'post__in', $ids );
 		$query->set( 'orderby', 'post__in' );
@@ -126,6 +142,59 @@ final class MediaQueryFilter {
 	 */
 	private function is_searchable_term( string $term ): bool {
 		return mb_strlen( trim( $term ) ) >= SearchService::MIN_QUERY_LENGTH;
+	}
+
+	/**
+	 * Remove Virtual Media Folders' folder constraint from grid query args.
+	 *
+	 * @param array<string, mixed> $query_args Query arguments.
+	 * @return array<string, mixed>
+	 */
+	private function remove_folder_scope( array $query_args ): array {
+		unset( $query_args['vmfo_folder'], $query_args['vmfo_folder_exclude'] );
+
+		if ( ! empty( $query_args['tax_query'] ) && is_array( $query_args['tax_query'] ) ) {
+			$stripped = $this->strip_folder_tax_query( $query_args['tax_query'] );
+
+			if ( empty( $stripped ) ) {
+				unset( $query_args['tax_query'] );
+			} else {
+				// Narrowing an existing tax query, not introducing one.
+				$query_args['tax_query'] = $stripped; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
+			}
+		}
+
+		return $query_args;
+	}
+
+	/**
+	 * Remove folder-taxonomy clauses from a tax_query, keeping any others.
+	 *
+	 * @param array<int|string, mixed> $tax_query Tax query array.
+	 * @return array<int|string, mixed>
+	 */
+	private function strip_folder_tax_query( array $tax_query ): array {
+		$filtered = [];
+		$relation = null;
+
+		foreach ( $tax_query as $key => $clause ) {
+			if ( 'relation' === $key ) {
+				$relation = $clause;
+				continue;
+			}
+
+			if ( is_array( $clause ) && isset( $clause['taxonomy'] ) && self::FOLDER_TAXONOMY === $clause['taxonomy'] ) {
+				continue;
+			}
+
+			$filtered[] = $clause;
+		}
+
+		if ( count( $filtered ) > 1 && null !== $relation ) {
+			$filtered['relation'] = $relation;
+		}
+
+		return $filtered;
 	}
 
 	/**

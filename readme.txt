@@ -14,13 +14,13 @@ Fast, typo-tolerant search for the WordPress Media Library, powered by the Loupe
 
 Virtual Media Folders - Search makes the Media Library's built-in search field typo-tolerant and content-aware. Type in the standard search box to find media items by title, filename, alt text, caption, or description — powered by [Loupe Search](https://github.com/soderlind/loupe-search).
 
-Search composes with your folders: when a folder is selected, results are scoped to it; select All Media to search the whole library.
+Search is **library-wide**: entering a term searches your whole library, even while a folder is selected. Clear the search to return to the folder view.
 
 = Features =
 
 * **Typo-tolerant search** across title, filename, alt text, caption, and description.
 * **Native field** – upgrades the existing Media Library search box; no extra UI.
-* **Folder-aware** – scoped to the selected folder, or the whole library.
+* **Library-wide** – searches the whole library, not just the current folder.
 * **Automatic indexing** – uploads, edits, deletions, and folder moves stay in sync.
 * **Background rebuild** – reindex large libraries without timeouts (Action Scheduler).
 * **Admin-only** – the media index is never exposed to front-end site search.

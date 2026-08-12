@@ -9,8 +9,8 @@ search box and results are matched against title, filename, alt text, caption,
 and description — with typo tolerance — instead of WordPress' default `LIKE`
 search. No extra UI is added.
 
-Search composes with folders: when a folder is selected, results are scoped to
-that folder; select **All Media** to search the whole library.
+Search is **library-wide**: entering a term searches the whole library, even
+while a folder is selected. Clear the search to return to the folder view.
 
 ## Requirements
 
@@ -23,7 +23,7 @@ that folder; select **All Media** to search the whole library.
 The add-on owns a dedicated Loupe/SQLite index of media items (`wp-content/vmfa-search-db/`), kept separate from Loupe Search's own post-type indexes. See [docs/adr/0001](docs/adr/0001-vmfa-search-owns-a-dedicated-media-index.md) for why.
 
 - **Indexing** – incremental on `add_attachment`, `edit_attachment`, `delete_attachment`, and `vmfo_folder_assigned`; full rebuild runs as a batched Action Scheduler job.
-- **Search** – the native Media Library search term (`s`) is intercepted server-side (grid via `ajax_query_attachments_args`, list via the main query) and resolved to attachment IDs (`post__in`, relevance order). Interception starts once the index is built; before then the native search is left as a fallback.
+- **Search** – the native Media Library search term (`s`) is intercepted server-side (grid via `ajax_query_attachments_args`, list via the main query) and resolved to attachment IDs (`post__in`, relevance order). Search is library-wide: the active folder constraint is dropped while a term is present. Interception starts once the index is built; before then the native search is left as a fallback.
 - **UI** – none in the grid; a status panel and **Rebuild media index** button live in **Media > VMF Settings > Search**.
 
 ## REST API
