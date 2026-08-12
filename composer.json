@@ -1,0 +1,50 @@
+{
+	"name": "soderlind/vmfa-search",
+	"description": "Fast, typo-tolerant search for the Media Library, powered by Loupe Search. Add-on for Virtual Media Folders.",
+	"type": "wordpress-plugin",
+	"license": "GPL-2.0-or-later",
+	"authors": [
+		{
+			"name": "Per Soderlind",
+			"homepage": "https://soderlind.no"
+		}
+	],
+	"autoload": {
+		"psr-4": {
+			"VmfaSearch\\": "src/php/"
+		}
+	},
+	"require": {
+		"php": ">=8.3",
+		"composer/installers": "^2.0",
+		"woocommerce/action-scheduler": "^3.7",
+		"yahnis-elsts/plugin-update-checker": "^5.6"
+	},
+	"require-dev": {
+		"brain/monkey": "^2.6",
+		"dealerdirect/phpcodesniffer-composer-installer": "^1.0",
+		"mockery/mockery": "^1.6",
+		"pestphp/pest": "^4.0",
+		"wp-coding-standards/wpcs": "^3.0"
+	},
+	"scripts": {
+		"test": "pest",
+		"lint": "phpcs",
+		"lint:fix": "phpcbf"
+	},
+	"config": {
+		"allow-plugins": {
+			"composer/installers": true,
+			"dealerdirect/phpcodesniffer-composer-installer": true,
+			"pestphp/pest-plugin": true
+		},
+		"sort-packages": true
+	},
+	"extra": {
+		"installer-paths": {
+			"vendor/{$vendor}/{$name}/": [
+				"woocommerce/action-scheduler"
+			]
+		}
+	}
+}

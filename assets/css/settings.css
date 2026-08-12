@@ -1,0 +1,26 @@
+/**
+ * Search settings tab styles.
+ *
+ * @package VmfaSearch
+ */
+
+.vmfa-search-settings {
+	max-width: 640px;
+}
+
+.vmfa-search-status {
+	margin: 12px 0;
+	padding: 12px;
+	background: #f6f7f7;
+	border: 1px solid #dcdcde;
+	border-radius: 4px;
+	min-height: 24px;
+}
+
+.vmfa-search-status p {
+	margin: 0 0 6px;
+}
+
+.vmfa-search-status p:last-child {
+	margin-bottom: 0;
+}

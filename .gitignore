@@ -1,0 +1,14 @@
+# Directories
+node_modules/
+vendor/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+
+# Build / test artifacts
+.phpunit.cache/
+coverage/
+
+# Logs
+*.log

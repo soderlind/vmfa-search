@@ -1,0 +1,16 @@
+/.git
+/.github
+/.gitignore
+/.gitattributes
+/.distignore
+/node_modules
+/tests
+/phpcs.xml
+/phpunit.xml.dist
+/vitest.config.js
+/package.json
+/package-lock.json
+/composer.lock
+/CONTEXT.md
+/docs
+/.phpunit.cache

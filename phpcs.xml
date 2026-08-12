@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<ruleset name="VMFA Search">
+	<description>Custom PHPCS ruleset for VMFA Search add-on.</description>
+
+	<arg name="extensions" value="php"/>
+	<arg name="colors"/>
+	<arg value="sp"/>
+
+	<file>./src/php</file>
+	<file>./vmfa-search.php</file>
+	<file>./uninstall.php</file>
+
+	<exclude-pattern>./vendor/*</exclude-pattern>
+	<exclude-pattern>./node_modules/*</exclude-pattern>
+	<exclude-pattern>./tests/*</exclude-pattern>
+
+	<rule ref="WordPress">
+		<exclude name="Universal.Arrays.DisallowShortArraySyntax"/>
+		<!-- PSR-4 autoloaded source uses CamelCase class files. -->
+		<exclude name="WordPress.Files.FileName.NotHyphenatedLowercase"/>
+		<exclude name="WordPress.Files.FileName.InvalidClassFileName"/>
+		<!-- Typed properties are self-documenting. -->
+		<exclude name="Squiz.Commenting.VariableComment.Missing"/>
+		<!-- Callback signatures are fixed by WordPress hooks. -->
+		<exclude name="Generic.CodeAnalysis.UnusedFunctionParameter"/>
+	</rule>
+
+	<rule ref="WordPress-Extra"/>
+
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array">
+				<element value="vmfa-search"/>
+			</property>
+		</properties>
+	</rule>
+
+	<config name="minimum_php_version" value="8.3"/>
+	<config name="minimum_wp_version" value="6.8"/>
+
+	<rule ref="WordPress.DB.DirectDatabaseQuery">
+		<severity>5</severity>
+	</rule>
+</ruleset>
