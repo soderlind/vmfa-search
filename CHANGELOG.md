@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## [1.1.0] - 2026-10-26
+
+- Changed: Styles use WordPress Design System (`--wpds-*`) tokens, so the UI follows WordPress 7.0+ styling automatically. With Virtual Media Folders 2.2.0+ on WordPress 6.8–6.9, the classic admin palette is used.
+- Changed: Every token has an inline WP 7 fallback value, so the settings tab still renders correctly with Virtual Media Folders < 2.2.0 on WordPress < 7.
+- Changed: The settings stylesheet depends on the `vmfo-tokens` style when Virtual Media Folders registers it.
+
 ## 1.0.1
 
 - Fixed: Prevent a fatal error when the "Virtual Media Folders" parent plugin is missing or older than 2.0.0; show an admin notice instead.

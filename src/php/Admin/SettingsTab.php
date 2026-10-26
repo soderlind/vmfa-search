@@ -81,10 +81,15 @@ final class SettingsTab {
 			return;
 		}
 
+		$style_deps = [];
+		if ( wp_style_is( 'vmfo-tokens', 'registered' ) ) {
+			$style_deps[] = 'vmfo-tokens';
+		}
+
 		wp_enqueue_style(
 			'vmfa-search-settings',
 			VMFA_SEARCH_URL . 'assets/css/settings.css',
-			[],
+			$style_deps,
 			VMFA_SEARCH_VERSION
 		);
 
