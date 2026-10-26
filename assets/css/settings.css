@@ -11,9 +11,9 @@
 .vmfa-search-status {
 	margin: 12px 0;
 	padding: 12px;
-	background: #f6f7f7;
-	border: 1px solid #dcdcde;
-	border-radius: 4px;
+	background: var(--wpds-color-background-surface-neutral-weak, #f4f4f4);
+	border: 1px solid var(--wpds-color-stroke-surface-neutral, #dbdbdb);
+	border-radius: var(--wpds-border-radius-md, 4px);
 	min-height: 24px;
 }
 
